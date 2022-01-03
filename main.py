@@ -35,7 +35,7 @@ origins = [
     "http://localhost:8080",
     "http://localhost:3000",
     "http://localhost:5000",
-    "https://lecture-listener.herokuapp.com/"
+    "https://lecturelistener.github.io/Frontend/#"
 ]
 
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
