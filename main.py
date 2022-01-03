@@ -14,6 +14,7 @@ from fastapi.staticfiles import StaticFiles
 import aiohttp #type:ignore
 import nest_asyncio
 from sqlalchemy.orm.session import Session #type:ignore
+from fastapi.middleware.cors import CORSMiddleware
 nest_asyncio.apply()
 
 DB_URL = 'sqlite:///./transcription.db'
@@ -28,6 +29,12 @@ class Transcription(Base):
 	transciption = Column(String)
 
 app = FastAPI()
+
+origins = [
+    "https://lecture-listener.herokuapp.com/"
+]
+
+app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
 Base.metadata.create_all(bind=engine)
 
@@ -61,7 +68,7 @@ def makeAuthHeader(token: str, fileExtension: str) -> Dict[str, str]:
         print(f"File extension {fileExtension} is not supported")
         return {'Authorization': 'error'}
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get('/',  status_code=status.HTTP_200_OK)
 async def home():
     return {'response': 'success'}
